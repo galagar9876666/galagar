@@ -1,0 +1,197 @@
+<html><head><base href="https://filipinonamegen.com/">
+<title>Filipino Name Generator</title>
+<meta charset="UTF-8">
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fdf6e3 0%, #ffe4bc 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+h1 {
+    color: #8b4513;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+button {
+    background: #ff9933;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+button:hover {
+    background: #ff8000;
+    transform: scale(1.05);
+}
+
+.result {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #f9f9f9;
+    min-height: 100px;
+}
+
+.name {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+.meaning {
+    color: #666;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+.gender-toggle {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.gender-btn {
+    padding: 8px 16px;
+    border: 2px solid #ff9933;
+    background: transparent;
+    color: #ff9933;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.gender-btn.active {
+    background: #ff9933;
+    color: white;
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Filipino Name Generator</h1>
+    <p class="description">Generate authentic Filipino names with their meanings, inspired by Philippine culture and heritage.</p>
+    
+    <div class="gender-toggle">
+        <button class="gender-btn active" data-gender="any">Any</button>
+        <button class="gender-btn" data-gender="female">Female</button>
+        <button class="gender-btn" data-gender="male">Male</button>
+    </div>
+    
+    <button id="generate">Generate Name</button>
+    
+    <div class="result">
+        <div class="name">Click generate to create a name</div>
+        <div class="meaning"></div>
+    </div>
+</div>
+
+<script>
+const femaleFirstNames = [
+    ['Maria', 'Derived from Mary, very common in Filipino culture'],
+    ['Isabella', 'Devoted to God'],
+    ['Luna', 'Moon'],
+    ['Maya', 'Name of a small bird native to Philippines'],
+    ['Ligaya', 'Joy, happiness'],
+    ['Mayumi', 'Gentle, well-mannered'],
+    ['Hiraya', 'Fruit of one\'s hopes, dreams and aspirations'],
+    ['Tala', 'Star'],
+    ['Amihan', 'North wind'],
+    ['Bituin', 'Star']
+];
+
+const maleFirstNames = [
+    ['Juan', 'God is gracious'],
+    ['Miguel', 'Who is like God?'],
+    ['Bayani', 'Hero'],
+    ['Dakila', 'Great, noble'],
+    ['Kidlat', 'Lightning'],
+    ['Makisig', 'Handsome, gallant'],
+    ['Habagat', 'South wind'],
+    ['Lualhati', 'Glory'],
+    ['Agila', 'Eagle'],
+    ['Bathala', 'Supreme being']
+];
+
+const lastNames = [
+    ['Santos', 'Saints'],
+    ['Reyes', 'Kings'],
+    ['Cruz', 'Cross'],
+    ['Bautista', 'Baptist'],
+    ['Mendoza', 'Cold mountain'],
+    ['Ramos', 'Branches'],
+    ['Castillo', 'Castle'],
+    ['Garcia', 'Bear'],
+    ['Dela Cruz', 'Of the Cross'],
+    ['Gonzales', 'Battle']
+];
+
+let currentGender = 'any';
+
+function getRandomItem(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function generateName() {
+    let firstName, meaning;
+    const lastName = getRandomItem(lastNames);
+    
+    if (currentGender === 'female') {
+        [firstName, meaning] = getRandomItem(femaleFirstNames);
+    } else if (currentGender === 'male') {
+        [firstName, meaning] = getRandomItem(maleFirstNames);
+    } else {
+        const combined = [...femaleFirstNames, ...maleFirstNames];
+        [firstName, meaning] = getRandomItem(combined);
+    }
+    
+    document.querySelector('.name').textContent = `${firstName} ${lastName[0]}`;
+    document.querySelector('.meaning').textContent = 
+        `First name meaning: ${meaning}\nLast name meaning: ${lastName[1]}`;
+}
+
+document.getElementById('generate').addEventListener('click', generateName);
+
+document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.gender-btn').forEach(b => 
+            b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        e.target.classList.add('active');
+        
+        // Update current gender
+        currentGender = e.target.dataset.gender;
+    });
+});
+</script>
+</body>
+</html>
